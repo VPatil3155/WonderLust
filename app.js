@@ -25,10 +25,12 @@ app.use(express.static(path.join(__dirname,"/public")))
 
 app.get("/",(req,res)=>{
     res.send("working");
+     console.log(Listing.price);
 });
 //index route
 app.get("/listings",async(req,res)=>{
     const allListings=await Listing.find({});
+   
     res.render("./listings/index.ejs",{allListings});
 });
 //create route
