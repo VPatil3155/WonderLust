@@ -1,6 +1,23 @@
-/* body{
-    background-color: pink;
-} */
+body{
+   .poppins-light {
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.poppins-regular {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.poppins-semibold {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+}
 
 .navbar{
     height: 5rem;
@@ -41,5 +58,33 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: space-evenly;
+    
+}
 
+.card{
+    border: none !important;
+     margin-bottom: 2rem;
+}
+
+.card-img-top{
+    border-radius: 1rem !important;
+    width: 100% !important;
+    object-fit: cover !important;
+}
+.card-body{
+    padding: 0 !important;
+}
+.card-text p{
+    font-weight: 400 !;
+}
+.listing-list{
+    text-decoration: none;
+}
+.card-img-overlay{
+opacity: 0;
+}
+
+.card-img-overlay:hover{
+opacity: 0.2;
+background-color: white;
 }
