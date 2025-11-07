@@ -7,6 +7,7 @@ const methodoverride=require("method-override");
 const ejsmate=require("ejs-mate");
 const wrapAsync=require("./utils/wrapAsync.js")
 const ExpressError=require("./utils/ExpressError.js")
+const {listingschema}=require("./Schema.js");
 
 const m_url="mongodb://127.0.0.1:27017/Wonderlust";
 main().then(()=>{
@@ -25,14 +26,23 @@ app.use(methodoverride("_method"));
 app.engine("ejs",ejsmate);
 app.use(express.static(path.join(__dirname,"/public")))
 
+
 app.get("/",(req,res)=>{
     res.send("working");
      console.log(Listing.price);
 });
+
+const validatelisting=(req,res,next)=>{
+    let{error}=listingschema.validate(req.body);
+    if(error){
+        throw new ExpressError(400,error);
+    }else{
+        next();
+    }
+}
 //index route
 app.get("/listings",wrapAsync(async(req,res)=>{
     const allListings=await Listing.find({});
-   
     res.render("./listings/index.ejs",{allListings});
 }));
 //create route
@@ -46,10 +56,7 @@ app.get("/listings/:id",wrapAsync(async(req,res)=>{
     res.render("./listings/show.ejs",{listing});
 }))
 //create route
-app.post("/listings",wrapAsync(async(req,res)=>{
-    if(!req.body.listing){
-        throw new ExpressError(400,"Please enter valid data for listing");
-    }
+app.post("/listings",validatelisting,wrapAsync(async(req,res,next)=>{
     const newlisting= new Listing(req.body.listing);
    await newlisting.save();
    res.redirect("/listings");
@@ -61,7 +68,7 @@ app.get("/listings/:id/edit",wrapAsync(async(req,res)=>{
     res.render("./listings/edit.ejs",{listing});
 }))
 
-app.put("/listings/:id",wrapAsync(async(req,res)=>{
+app.put("/listings/:id",validatelisting,wrapAsync(async(req,res)=>{
    let{id}=req.params;
   await Listing.findByIdAndUpdate(id,{...req.body.listing});
    res.redirect(`/listings/${id}`);
