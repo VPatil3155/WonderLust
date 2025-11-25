@@ -8,6 +8,7 @@ const ejsmate=require("ejs-mate");
 const wrapAsync=require("./utils/wrapAsync.js")
 const ExpressError=require("./utils/ExpressError.js")
 const {listingschema}=require("./Schema.js");
+const review=require("./models/review.js");
 
 const m_url="mongodb://127.0.0.1:27017/Wonderlust";
 main().then(()=>{
@@ -93,6 +94,23 @@ app.use((err,req,res,next)=>{
     res.status(statusCode).render("./listings/error.ejs",{message})
     // res.status(statusCode).send(message);
 })
+
+//Review
+//Post review
+app.post("/listings/:id/review",async(req,res)=>{
+let listing=await Listing.findById(req.params.id)
+let newreview= new review(req.body.review);
+listing.reviews.push(newreview);
+
+await newreview.save();
+await listing.save();
+
+console.log("new review saved");
+res.send("new review  saved");
+
+})
+
+
 // app.get("/testListing",async(req,res)=>{
 // let samplelisting = new Listing({
 //     title:"My new Villa",

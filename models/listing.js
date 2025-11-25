@@ -1,10 +1,12 @@
 const mongoose=require("mongoose");
+const { type } = require("os");
+const { ref } = require("process");
 const schema=mongoose.Schema;
 
 const listingschema= new schema({
 title:{
     type:String,
-    require:true,
+    required:true,
 },
 description:String,
 image:{
@@ -16,6 +18,10 @@ image:{
 price:Number,
 location:String,
 country:String,
+reviews:[{
+    type:schema.Types.ObjectID,
+    ref:"Review",
+}]
 });
 
 const Listing=mongoose.model("Listing",listingschema);
