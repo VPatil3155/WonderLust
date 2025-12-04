@@ -7,8 +7,8 @@ const methodoverride=require("method-override");
 const ejsmate=require("ejs-mate");
 const wrapAsync=require("./utils/wrapAsync.js")
 const ExpressError=require("./utils/ExpressError.js")
-const {listingschema}=require("./Schema.js");
-const review=require("./models/review.js");
+const {listingschema,reviewschema}=require("./Schema.js");
+const Review=require("./models/review.js");
 
 const m_url="mongodb://127.0.0.1:27017/Wonderlust";
 main().then(()=>{
@@ -41,6 +41,14 @@ const validatelisting=(req,res,next)=>{
         next();
     }
 }
+const validatereview=(req,res,next)=>{
+    let{error}=reviewschema.validate(req.body);
+    if(error){
+        throw new ExpressError(400,error);
+    }else{
+        next();
+    }
+}
 //index route
 app.get("/listings",wrapAsync(async(req,res)=>{
     const allListings=await Listing.find({});
@@ -53,7 +61,7 @@ app.get("/listings/new",(req,res)=>{
 //show route
 app.get("/listings/:id",wrapAsync(async(req,res)=>{
     let{id}=req.params;
-    const listing= await Listing.findById(id);
+    const listing= await Listing.findById(id).populate("reviews");
     res.render("./listings/show.ejs",{listing});
 }))
 //create route
@@ -81,6 +89,19 @@ app.delete("/listings/:id",wrapAsync(async(req,res)=>{
  res.redirect("/listings");
 }))
 
+//Review
+//Post review
+app.post("/listings/:id/reviews",validatereview,wrapAsync(async(req,res)=>{
+let listing=await Listing.findById(req.params.id);
+let newreview= new Review(req.body.review);
+listing.reviews.push(newreview);
+
+await newreview.save();
+await listing.save();
+
+res.redirect(`/listings/${listing._id}`);
+
+}));
 app.listen(8080,()=>{
     console.log("the port is listening on port 8080");
 });
@@ -95,20 +116,7 @@ app.use((err,req,res,next)=>{
     // res.status(statusCode).send(message);
 })
 
-//Review
-//Post review
-app.post("/listings/:id/review",async(req,res)=>{
-let listing=await Listing.findById(req.params.id)
-let newreview= new review(req.body.review);
-listing.reviews.push(newreview);
 
-await newreview.save();
-await listing.save();
-
-console.log("new review saved");
-res.send("new review  saved");
-
-})
 
 
 // app.get("/testListing",async(req,res)=>{

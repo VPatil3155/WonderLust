@@ -20,7 +20,7 @@ location:String,
 country:String,
 reviews:[{
     type:schema.Types.ObjectID,
-    ref:"Review",
+    ref:"review",
 }]
 });
 
