@@ -33,7 +33,9 @@ app.get("/",(req,res)=>{
      console.log(Listing.price);
 });
 
-
+app.get("/demousr",async(req,res)=>{
+    res.send("demo user working");
+}
 app.use("/listings",listings); 
 app.use("/listings/:id/reviews",reviews);
 
