@@ -10,7 +10,7 @@ const ExpressError=require("./utils/ExpressError.js")
 const listings= require("./routes/listings.js");
 const reviews=require("./routes/review.js");
 
-const m_url="mongodb://127.0.0.1:27017/Wonderlust";
+const m_url="mongodb+srv://nageshsutar1221_db_user:AuTkANRQu1S4u1fw@wonderlust.ssdmsho.mongodb.net/?appName=WonderLust";
 main().then(()=>{
     console.log("connected to DB");
 }).catch((err)=>{
@@ -34,13 +34,14 @@ app.get("/",(req,res)=>{
 });
 
 app.get("/demousr",async(req,res)=>{
-    res.send("demo user working");
-}
+    res.send("demo user working");});
 app.use("/listings",listings); 
 app.use("/listings/:id/reviews",reviews);
 
-app.listen(8080,()=>{
-    console.log("the port is listening on port 8080");
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log("Server running");
 });
 
 app.use((req,res,next)=>{

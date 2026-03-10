@@ -3,7 +3,7 @@ const initdata= require("./data.js");
 const Listing=require("../models/listing.js");
 const { insertMany } = require("../models/listing.js");
 
-const m_url="mongodb://127.0.0.1:27017/Wonderlust";
+const m_url="mongodb+srv://nageshsutar1221_db_user:AuTkANRQu1S4u1fw@wonderlust.ssdmsho.mongodb.net/?appName=WonderLustt";
 main().then(()=>{
     console.log("connected to DB");
 }).catch((err)=>{

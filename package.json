@@ -20,5 +20,14 @@
     "method-override": "^3.0.0",
     "mongoose": "^8.18.1",
     "nodemon": "^3.1.11"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VPatil3155/WonderLust.git"
+  },
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/VPatil3155/WonderLust/issues"
+  },
+  "homepage": "https://github.com/VPatil3155/WonderLust#readme"
 }
